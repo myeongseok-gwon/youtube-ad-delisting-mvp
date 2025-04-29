@@ -17,16 +17,48 @@ export default function VideoTable({ rows }) {
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         />
-      )
+      ),
+      sortingOrder: ['desc', 'asc']
     },
     { 
       field: 'gender_male', 
-      headerName: 'Delisting Score', 
+      headerName: 'Detargeting Score', 
       width: 200,
-      valueFormatter: ({ value }) => value.toFixed(2)
+      valueFormatter: ({ value }) => value.toFixed(2),
+      sortingOrder: ['desc', 'asc'],
+      filterOperators: [
+        {
+          label: 'Greater than or equal to',
+          value: '>=',
+          getApplyFilterFn: (filterItem) => {
+            if (!filterItem.value) {
+              return null;
+            }
+            return (params) => {
+              return Number(params.value) >= Number(filterItem.value);
+            };
+          },
+        },
+      ],
+      type: 'number'
     },
-    { field: 'impressions', headerName: 'Impressions', width: 200 },
-    { field: 'reasoning', headerName: 'Reason', width: 400 }
+    { 
+      field: 'impressions', 
+      headerName: 'Impressions', 
+      width: 200,
+      sortingOrder: ['desc', 'asc']
+    },
+    { 
+      field: 'reason', 
+      headerName: 'Reason', 
+      width: 400,
+      sortingOrder: ['desc', 'asc'],
+      renderCell: (params) => (
+        <div style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
+          {params.value}
+        </div>
+      )
+    }
   ], []);
 
   return (
@@ -41,7 +73,19 @@ export default function VideoTable({ rows }) {
         initialState={{
           pagination: { paginationModel: { pageSize: 25, page: 0 } },
           sorting: {
-            sortModel: [{ field: 'gender_male', sort: 'desc' }]
+            sortModel: [{ field: 'gender_male', sort: 'desc' }],
+            sortDirection: 'desc'
+          },
+          filter: {
+            filterModel: {
+              items: [
+                {
+                  field: 'gender_male',
+                  operator: '>=',
+                  value: 0.4
+                }
+              ]
+            }
           }
         }}
         disableRowSelectionOnClick

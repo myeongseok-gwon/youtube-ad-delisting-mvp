@@ -28,11 +28,11 @@ function App() {
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Febreze Ads Campaign Delisting
+        Febreze Ads Campaign Detargeting
       </Typography>
       <Box sx={{ mb: 2 }}>
         <Typography variant="subtitle1">
-          Out of 26,861 total videos, 12,315 videos are candidates for delisting.
+          Out of 26,861 total videos, 12,315 videos are candidates for Detargeting.
         </Typography>
       </Box>
       <VideoTable rows={data} />
