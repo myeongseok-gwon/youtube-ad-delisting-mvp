@@ -26,6 +26,13 @@ export default function VideoTable({ rows }) {
       width: 200,
       valueFormatter: ({ value }) => value.toFixed(2),
       sortingOrder: ['desc', 'asc'],
+      sortComparator: (v1, v2, param1, param2) => {
+        if (v1 !== v2) {
+          return v1 < v2 ? -1 : 1;
+        }
+        // If detargeting scores are equal, sort by impressions
+        return param1.api.getCellValue(param1.id, 'impressions') < param2.api.getCellValue(param2.id, 'impressions') ? -1 : 1;
+      },
       filterOperators: [
         {
           label: 'Greater than or equal to',
@@ -70,11 +77,14 @@ export default function VideoTable({ rows }) {
         getRowId={r => r.id}
         pagination
         pageSizeOptions={[10, 25, 50, 100]}
+        sortingMode="multiple"
         initialState={{
           pagination: { paginationModel: { pageSize: 25, page: 0 } },
           sorting: {
-            sortModel: [{ field: 'gender_male', sort: 'desc' }],
-            sortDirection: 'desc'
+            sortModel: [
+              { field: 'gender_male', sort: 'desc' },
+              { field: 'impressions', sort: 'desc' }
+            ]
           },
           filter: {
             filterModel: {
