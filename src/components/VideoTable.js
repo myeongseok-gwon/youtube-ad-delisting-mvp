@@ -46,6 +46,18 @@ export default function VideoTable({ rows }) {
             };
           },
         },
+        {
+          label: 'Less than',
+          value: '<',
+          getApplyFilterFn: (filterItem) => {
+            if (!filterItem.value) {
+              return null;
+            }
+            return (params) => {
+              return Number(params.value) < Number(filterItem.value);
+            };
+          },
+        },
       ],
       type: 'number'
     },
